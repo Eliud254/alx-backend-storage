@@ -8,7 +8,8 @@ BEGIN
         FROM corrections
         JOIN projects ON corrections.project_id = projects.id
         WHERE corrections.user_id = users.id
-    );
+    )
+    WHERE id IN (SELECT user_id FROM corrections); -- Ensure to update only users who have corrections
 END //
 DELIMITER ;
 
