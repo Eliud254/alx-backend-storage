@@ -14,3 +14,4 @@ if __name__ == "__main__":
         print("\tmethod {}: {}".format(method, count))
     status_get = col.count_documents({'method': 'GET', 'path': "/status"})
     print("{} status check".format(status_get))
+
