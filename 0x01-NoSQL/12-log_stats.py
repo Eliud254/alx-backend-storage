@@ -1,33 +1,16 @@
 #!/usr/bin/env python3
-""" The 12. Log stats
-"""
-
-
+"""The script that providing some stats about Nginx logs stored in Mdb"""
 from pymongo import MongoClient
 
 
-def log_stats():
-    """ The log_stats
-    """
-    client = MongoClient('mongodb://127.0.0.1:27017')
-    logs_collection = client.logs.nginx
-    total = logs_collection.count_documents({})
-    get = logs_collection.count_documents({"method": "GET"})
-    post = logs_collection.count_documents({"method": "POST"})
-    put = logs_collection.count_documents({"method": "PUT"})
-    patch = logs_collection.count_documents({"method": "PATCH"})
-    delete = logs_collection.count_documents({"method": "DELETE"})
-    path = logs_collection.count_documents(
-        {"method": "GET", "path": "/status"})
-    print(f"{total} logs")
-    print("Methods:")
-    print(f"\tmethod GET: {get}")
-    print(f"\tmethod POST: {post}")
-    print(f"\tmethod PUT: {put}")
-    print(f"\tmethod PATCH: {patch}")
-    print(f"\tmethod DELETE: {delete}")
-    print(f"{path} status check")
-
-
 if __name__ == "__main__":
-    log_stats()
+    '''Stats about Nginx logs'''
+    client = MongoClient('mongodb://127.0.0.1:27017')
+    col = client.logs.nginx
+    print("{} logs".format(col.estimated_document_count()))
+    print("Methods:")
+    for method in ["GET", "POST", "PUT", "PATCH", "DELETE"]:
+        count = col.count_documents({'method': method})
+        print("\tmethod {}: {}".format(method, count))
+    status_get = col.count_documents({'method': 'GET', 'path': "/status"})
+    print("{} status check".format(status_get))
