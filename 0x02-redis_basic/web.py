@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-'''Implementing an expiring web cache and tracker.'''
+# Implementing an expiring web cache and tracker
 import redis
 import requests
 from datetime import timedelta
 
+
 def get_page(url: str) -> str:
-    '''Retrieves the content of a URL, tracks the number of accesses,
-    and caches the result with an expiration time of 10 seconds.
-    '''
+    # Retrieves the content of a URL, tracks the number of accesses,
+    # and caches the result with an expiration time of 10 seconds.
+
     # Check if the URL is valid
     if url is None or len(url.strip()) == 0:
         return ''
@@ -36,6 +37,7 @@ def get_page(url: str) -> str:
     redis_store.incr(req_key)
 
     return result
+
 
 if __name__ == "__main__":
     # Example usage
